@@ -15,10 +15,14 @@ echo -ne "\033[32mCPU核数 ：\033[0m `cat /proc/cpuinfo | grep "cpu cores" | u
 echo -e "\033[32mCPU逻辑个数 ：\033[0m" `cat /proc/cpuinfo | grep "cpu cores" | uniq |awk -F': ' '{print $2}'`
 echo -ne "\033[32m内存大小    ：\033[0m `free -m|awk 'NR==2{print $2" MB"}'`    \033[33m|    \033[0m"
 echo -e "\033[32mSwap大小    ：\033[0m" `free -m|awk '/Swap/{print $2"MB"}'`
-echo -e "\033[32mSelinux状态 ：\033[0m"  `getenforce`
+echo -ne "\033[32mSelinux状态 ：\033[0m `getenforce`\033[33m  |    \033[0m"
 echo -e "\033[32m防火墙状态  ：\033[0m" $([[ -z `uname -r|grep "el7"` ]] && { service iptables status|head -1 |grep iptables &>/dev/null && echo "Iptables[dead]" || echo "Iptables[running]"; } || systemctl status firewalld | egrep  "dead|running"|sed 's@).*@)@;s@.*(@Firewalld(@')
-
+echo -e "\033[32m当前网卡信息：\033[0m"
+for hw in `ip a|awk -F ':' '/mtu.*UP.*qlen/{print $2}'`
+do
+ 	echo "$hw " `ip a show  $hw|awk '/inet /{print $2}'|xargs -n2` |awk '{printf "\033[33m%9s   ：\033[0m %10s\n",$1,$2}'
+done
 echo -e "\033[32m当前负载    ：\033[0m" `uptime|sed 's@.*average:@@'`
-echo -e "\033[32m硬盘信息:\033[0m" 
+echo -e "\033[32m硬盘信息    ：\033[0m" 
 df -lh|awk -F '[% ]+' '{if(NR==1)print "\033[33m"$0"\033[0m";else if($5>90)print "\033[31m"$0"\033[0m"; else print $0}'
 echo "*******************************************************************"
