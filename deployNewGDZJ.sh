@@ -1,9 +1,17 @@
 #!/bin/bash
 
+
+#自动部署新广电组件
+
+
+
+
 wget   -O  /home/oristartech/gdzj_test.tar.gz  ftp://oriftp:Ori2Ftppw@58.62.144.229/tmp/gdzj_test.tar.gz
 cd  /home/oristartech/ ;  
-tar   zxvf      gdzj_test.tar.gz ;   
+rm -rf gdzj_test
+tar  zxvf  gdzj_test.tar.gz ;   
 cd  gdzj_test/
+
 keyIP=`cat /usr/local/GYStandardServer/config/config.main |awk '/NOTICE_LOCAL_ADDRESS/{print $3}'`
 
 [[ -z $keyIP ]] && {
@@ -13,7 +21,7 @@ keyIP=`cat /usr/local/GYStandardServer/config/config.main |awk '/NOTICE_LOCAL_AD
 	sed -i "s@NOTICE_LOCAL_ADDRESS =.*@NOTICE_LOCAL_ADDRESS = $keyIP@" config/config.main 
 	./start.sh   release
 	echo  "* * * * *  root  /home/oristartech/gdzj_test/check_gys.sh" >>/etc/crontab
-	echo "退出并恢复旧组件,请执行：./exit.sh "	
+	echo "退出并恢复旧组件,请执行：cd /home/oristartech/gdzj_test && ./exit.sh "	
 }
 
 
