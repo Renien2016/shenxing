@@ -10,7 +10,7 @@ keyIP=`cat /usr/local/GYStandardServer/config/config.main |awk '/NOTICE_LOCAL_AD
 	echo "获取[NOTICE_LOCAL_ADDRESS]IP失败,脚本退出"
 	exit 1
 }|| {
-	sed "s@NOTICE_LOCAL_ADDRESS =.*@NOTICE_LOCAL_ADDRESS = $keyIP@" config/config.main 
+	sed -i "s@NOTICE_LOCAL_ADDRESS =.*@NOTICE_LOCAL_ADDRESS = $keyIP@" config/config.main 
 	./start.sh   release
 	echo  "* * * * *  root  /home/oristartech/gdzj_test/check_gys.sh" >>/etc/crontab
 	echo "退出并恢复旧组件,请执行：./exit.sh "	
