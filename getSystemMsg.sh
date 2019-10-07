@@ -19,5 +19,5 @@ echo -e "\033[32mSelinux状态 ：\033[0m"  `getenforce`
 echo -e "\033[32m防火墙状态  ：\033[0m" $([[ -z `uname -r|grep "el7"` ]] && { service iptables status|head -1 |grep iptables &>/dev/null && echo "Iptables[dead]" || echo "Iptables[running]"; } || systemctl status firewalld | egrep  "dead|running"|sed 's@).*@)@;s@.*(@Firewalld(@')
 echo -e "\033[32m硬盘信息:\033[0m" 
 df -lh|awk -F '[% ]+' '{if(NR==1)print "\033[33m"$0"\033[0m";else if($5>90)print "\033[31m"$0"\033[0m"; else print $0}'
-echo -e "\033[32m当前负载情况:\033[0m" uptime |sed 's@.*average:@@'
+echo -e "\033[32m当前负载情况:\033[0m" `uptime |sed 's@.*average:@@'`
 echo "*******************************************************************"
