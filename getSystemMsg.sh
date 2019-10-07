@@ -20,7 +20,7 @@ echo -e "\033[32m防火墙状态  ：\033[0m" $([[ -z `uname -r|grep "el7"` ]] &
 echo -e "\033[32m当前网卡信息：\033[0m"
 for hw in `ip a|awk -F ':' '/mtu.*UP.*qlen/{print $2}'`
 do
- 	echo "$hw " `ip a show  $hw|awk '/inet /{print $2}'|xargs -n2` |awk '{printf "\033[33m%9s   ：\033[0m %10s\n",$1,$2,$3}'
+ 	echo "$hw " `ip a show  $hw|awk '/inet /{print $2}'|xargs -n2` |awk '{printf "\033[33m%9s   ：\033[0m %10s %s\n",$1,$2,$3}'
 done
 echo -e "\033[32m当前负载    ：\033[0m" `uptime|sed 's@.*average:@@'`
 echo -e "\033[32m硬盘信息    ：\033[0m" 
